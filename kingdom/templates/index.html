@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
+    <script>
+      function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+      }
+
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+      }
+    </script>
+  </head>
+  <body>
+
+    <h2>Drag and Drop</h2>
+    <p>Drag the image back and forth between the two div elements.</p>
+
+    <div id="grid_box0" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <img src="{{ url_for('static',filename='img/House.png') }}" draggable="true" ondragstart="drag(event)" id="drag1">
+    </div>
+    <div id="grid-wrapper">
+      {% for i in range(grid) %}
+      <div id="grid_box"+i ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

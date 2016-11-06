@@ -1,0 +1,12 @@
+*[id*='grid_box'] {
+        float: left;
+        width: 98px;
+        height: 98px;
+        padding: 2px;
+        border: 1px solid black;
+      }
+#grid-wrapper {
+    margin: auto ;
+    width: 520px;
+    padding: 0px;
+}
