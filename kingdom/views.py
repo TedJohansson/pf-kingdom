@@ -1,20 +1,26 @@
 from flask import render_template, flash, redirect, session, url_for, request, g, abort
 from flask_login import login_user, logout_user, current_user, login_required
 from kingdom import kingdom, db, lm, bcrypt
-from .forms import LoginForm
-from .models import User
+from .forms import LoginForm, GridForm
+from .models import User, Buildings
 
-@kingdom.route('/')
-@kingdom.route('/index')
+@kingdom.route('/', methods=['GET', 'POST'])
+@kingdom.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    list_buildings = Buildings.query.values(Buildings.name)
     user = g.user
     grid = 25
-
+    building_img = 'Bank'
+    if request.method == 'POST':
+        form = GridForm(request.form)
+        building_img = request.form['building_name']
     return render_template('index.html',
                            title='Home',
                            user=user,
-                           grid=grid)
+                           grid=grid,
+                           buildings=list_buildings,
+                           building_img=building_img)
 
 @kingdom.before_request
 def before_request():
