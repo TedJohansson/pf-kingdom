@@ -21,7 +21,6 @@
   <body>
 
     <h2>Drag and Drop</h2>
-    <p>Drag the image back and forth between the two div elements.</p>
     <form action="" method="post">
       <select placeholder="building_name" name="building_name">
         {% for building in buildings %}
@@ -33,9 +32,16 @@
     <div id="grid_box0" ondrop="drop(event)" ondragover="allowDrop(event)">
       <img src="{{ url_for('static',filename='img/'+building_img+'.png') }}" draggable="true" ondragstart="drag(event)" id="drag1">
     </div>
+
     <div id="grid-wrapper">
-      {% for i in range(grid) %}
-      <div id="grid_box"+i ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      {% for i in range(grid_len) %}
+      <div id="grid_box{{i}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+          {% for x in all_buildings %}
+            {% if x[0] == grid_list[i] %}
+               <img src="{{ url_for('static',filename='img/'+x[1]+'.png') }}">
+            {% endif %}
+          {% endfor %}
+      </div>
       {% endfor %}
     </div>
   </body>
