@@ -14,12 +14,16 @@
       function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
+        var input = document.createElement("INPUT")
+        input.setAttribute("style", "display:none;")
+        input.setAttribute("value",data.replace("drag",""))
+        input.setAttribute("name",ev.target.getAttribute("ID"))
+        ev.target.appendChild(input);
         ev.target.appendChild(document.getElementById(data));
       }
     </script>
   </head>
   <body>
-
     <h2>Drag and Drop</h2>
     <form action="" method="post">
       <select placeholder="building_name" name="building_name">
@@ -30,19 +34,22 @@
       <input class="btn btn-default" type="submit" value="select">
     </form>
     <div id="grid_box0" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <img src="{{ url_for('static',filename='img/'+building_img+'.png') }}" draggable="true" ondragstart="drag(event)" id="drag1">
+      <img src="{{ url_for('static',filename='img/'+building_img+'.png') }}" draggable="true" ondragstart="drag(event)" id="drag{{building_id}}">
     </div>
-
-    <div id="grid-wrapper">
-      {% for i in range(grid_len) %}
-      <div id="grid_box{{i}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-          {% for x in all_buildings %}
-            {% if x[0] == grid_list[i] %}
-               <img src="{{ url_for('static',filename='img/'+x[1]+'.png') }}">
-            {% endif %}
-          {% endfor %}
+    <form action="" method="post">
+      <div id="grid-wrapper">
+        {% for i in range(grid_len) %}
+        <div id="grid_box{{i}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+            {% for x in all_buildings %}
+              {% if x[0] == grid_list[i] %}
+                 <input value="{{x[0]}}" style="display:none;">
+                 <img src="{{ url_for('static',filename='img/'+x[1]+'.png') }}" draggable="true" ondragstart="drag(event)" id="drag{{i+40}}">
+              {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
+      <input class="btn btn-default" type="submit" value="update">
+    </form>
   </body>
 </html>

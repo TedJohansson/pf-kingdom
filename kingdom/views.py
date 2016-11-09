@@ -18,17 +18,17 @@ def index():
     building_img = 'Bank'
     grid_list = Grid.query.filter(Grid.user_id == 1).values(Grid.grid)
     grids = serializer.loads(list(grid_list)[0][0])
-
+    building_id = 4
     if request.method == 'POST':
         building_img = request.form['building_name']
-        for i in range(25):
-            print(request.form['grid_box' + str(i + 1)])
+        building_id = list(Buildings.query.filter(Buildings.name == request.form['building_name']).values(Buildings.id))[0][0]
     return render_template('index.html',
                            title='Home',
                            user=user,
                            grid=grid,
                            buildings=list_buildings,
                            building_img=building_img,
+                           building_id=building_id,
                            grid_list=grids.size,
                            grid_len=len(grids.size),
                            all_buildings=all_buildings)
